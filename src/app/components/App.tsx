@@ -12,6 +12,9 @@ function App() {
   const [showPreloader, setShowPreloader] = useState(false);
   const [filterType, setFilterType] = useState('all');
   const [collectionFilter, setCollectionFilter] = useState('all');
+  
+  // 1. Add searchTerm state
+  const [searchTerm, setSearchTerm] = useState('');
 
   const variablesInUseRef = useRef([]);
   const loadingDoneRef = useRef(false);
@@ -30,14 +33,23 @@ function App() {
   const handleCollectionChange = (event) => {
     setCollectionFilter(event.target.value);
   };
+  
+  // 3. Handle search term change
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-  const uniqueCollections = Array.from(new Set(variablesInUse.map(v => v.collectionId)));
+  const uniqueCollections = Array.from(new Set(variablesInUse.map(v => v.collectionId))).map(id => {
+    const variable = variablesInUse.find(v => v.collectionId === id);
+    return { id, name: variable?.collectionName || `Collection ${id}` };
+  });
 
-  // Filter variables by type and collection
+  // 4. Update filtering logic to include search term
   let filteredVariables = variablesInUse.filter(variable => {
     const typeMatch = filterType === 'all' || variable.type === filterType;
     const collectionMatch = collectionFilter === 'all' || variable.collectionId === collectionFilter;
-    return typeMatch && collectionMatch;
+    const termMatch = searchTerm.trim() === '' || variable.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return typeMatch && collectionMatch && termMatch;
   });
 
   React.useEffect(() => {
@@ -69,7 +81,7 @@ function App() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.15 }}
-                key="inital-state"
+                key="initial-state"
               >
                 <motion.img
                   src={variableIcon}
@@ -104,7 +116,15 @@ function App() {
             </div>
           ) : (
             <div>
-              <div className="variables-count">                
+              <div className="variables-count">
+                {/* 2. Add search input field */}
+                <input
+                  type="text"
+                  placeholder="Search variables..."
+                  value={searchTerm}
+                  onChange={handleSearchTermChange}
+                  className="search-input"
+                />
                 <select value={filterType} onChange={handleFilterChange}>
                   <option value="all">All Types</option>
                   <option value="boolean">Boolean</option>
@@ -114,9 +134,9 @@ function App() {
                 </select>
                 <select value={collectionFilter} onChange={handleCollectionChange}>
                   <option value="all">All Collections</option>
-                  {uniqueCollections.map((collectionId) => (
-                    <option key={collectionId} value={collectionId}>
-                      {collectionId}
+                  {uniqueCollections.map((collection) => (
+                    <option key={collection.id} value={collection.id}>
+                      {collection.name}
                     </option>
                   ))}
                 </select>
