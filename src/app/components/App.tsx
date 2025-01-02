@@ -11,6 +11,7 @@ function App() {
   const [loadingDone, setLoadingDone] = useState(false);
   const [showPreloader, setShowPreloader] = useState(false);
   const [filterType, setFilterType] = useState('all');
+  const [collectionFilter, setCollectionFilter] = useState('all');
 
   const variablesInUseRef = useRef([]);
   const loadingDoneRef = useRef(false);
@@ -26,10 +27,18 @@ function App() {
     setFilterType(event.target.value);
   };
 
-  let filteredVariables = variablesInUse;
-  if (filterType !== 'all') {
-    filteredVariables = variablesInUse.filter(variable => variable.type === filterType);
-  }
+  const handleCollectionChange = (event) => {
+    setCollectionFilter(event.target.value);
+  };
+
+  const uniqueCollections = Array.from(new Set(variablesInUse.map(v => v.collectionId)));
+
+  // Filter variables by type and collection
+  let filteredVariables = variablesInUse.filter(variable => {
+    const typeMatch = filterType === 'all' || variable.type === filterType;
+    const collectionMatch = collectionFilter === 'all' || variable.collectionId === collectionFilter;
+    return typeMatch && collectionMatch;
+  });
 
   React.useEffect(() => {
     window.onmessage = (event) => {
@@ -97,11 +106,19 @@ function App() {
             <div>
               <div className="variables-count">                
                 <select value={filterType} onChange={handleFilterChange}>
-                  <option value="all">All</option>
+                  <option value="all">All Types</option>
                   <option value="boolean">Boolean</option>
                   <option value="string">String</option>
                   <option value="number">Number</option>
                   <option value="color">Color</option>
+                </select>
+                <select value={collectionFilter} onChange={handleCollectionChange}>
+                  <option value="all">All Collections</option>
+                  {uniqueCollections.map((collectionId) => (
+                    <option key={collectionId} value={collectionId}>
+                      {collectionId}
+                    </option>
+                  ))}
                 </select>
                 <h2>Found {filteredVariables.length} variables</h2>
               </div>
