@@ -116,7 +116,7 @@ function App() {
             </div>
           ) : (
             <div>
-              <div className="variables-count">
+              <div className="filters">
                 {/* 2. Add search input field */}
                 <input
                   type="text"
@@ -140,8 +140,8 @@ function App() {
                     </option>
                   ))}
                 </select>
-                <h2>Found {filteredVariables.length} variables</h2>
               </div>
+              <div className="variables-count"><h3>Found {filteredVariables.length} variables</h3></div>
               <div className="title-wrapper">
                 <h3 className="table-header border-right">Variable</h3>
                 <h3 className="table-header">Value</h3>

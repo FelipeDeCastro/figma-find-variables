@@ -66,6 +66,14 @@ button {
   margin-bottom: 16px;
   line-height: 16px;
 }
+.filters{
+  margin: 16px;
+  display: flex;
+  gap: 16px;
+}
+.search-input{
+  width: 256px;
+}
 .variables-count{
   margin: 16px;
 }
