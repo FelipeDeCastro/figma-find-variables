@@ -10,6 +10,7 @@ function App() {
   const [variablesInUse, setVariablesInUse] = useState([]);
   const [loadingDone, setLoadingDone] = useState(false);
   const [showPreloader, setShowPreloader] = useState(false);
+  const [filterType, setFilterType] = useState('all');
 
   const variablesInUseRef = useRef([]);
   const loadingDoneRef = useRef(false);
@@ -20,6 +21,15 @@ function App() {
     setShowPreloader(true);
     parent.postMessage({ pluginMessage: { type: 'find-variables' } }, '*');
   };
+
+  const handleFilterChange = (event) => {
+    setFilterType(event.target.value);
+  };
+
+  let filteredVariables = variablesInUse;
+  if (filterType !== 'all') {
+    filteredVariables = variablesInUse.filter(variable => variable.type === filterType);
+  }
 
   React.useEffect(() => {
     window.onmessage = (event) => {
@@ -85,15 +95,22 @@ function App() {
             </div>
           ) : (
             <div>
-              <div className="variables-count">
-                <h2>Found {variablesInUse.length} variables</h2>
+              <div className="variables-count">                
+                <select value={filterType} onChange={handleFilterChange}>
+                  <option value="all">All</option>
+                  <option value="boolean">Boolean</option>
+                  <option value="string">String</option>
+                  <option value="number">Number</option>
+                  <option value="color">Color</option>
+                </select>
+                <h2>Found {filteredVariables.length} variables</h2>
               </div>
               <div className="title-wrapper">
                 <h3 className="table-header border-right">Name</h3>
                 <h3 className="table-header">Mode 1</h3>
               </div>
               <ul className="variable-list">
-                {variablesInUse.map((variable, index) => (
+                {filteredVariables.map((variable, index) => (
                   <VariableListItem key={index} variable={variable} />
                 ))}
               </ul>             
