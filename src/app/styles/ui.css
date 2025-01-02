@@ -66,6 +66,9 @@ button {
   margin-bottom: 16px;
   line-height: 16px;
 }
+.variables-count{
+  margin: 16px;
+}
 
 .title-wrapper {
   display: flex;
@@ -73,8 +76,8 @@ button {
 }
 
 .table-header {
-  width: 200px;
   display: flex;
+  width: 100%;
   justify-content: flex-start;
   margin: 0;
   padding: 0 16px;

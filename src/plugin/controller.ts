@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 443, height: 580 });
+figma.showUI(__html__, { width: 800, height: 700 });
 
 // Variables object we'll use for storing all the variables
 // found in our page.

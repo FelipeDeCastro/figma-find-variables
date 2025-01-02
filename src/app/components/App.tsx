@@ -106,8 +106,8 @@ function App() {
                 <h2>Found {filteredVariables.length} variables</h2>
               </div>
               <div className="title-wrapper">
-                <h3 className="table-header border-right">Name</h3>
-                <h3 className="table-header">Mode 1</h3>
+                <h3 className="table-header border-right">Variable</h3>
+                <h3 className="table-header">Value</h3>
               </div>
               <ul className="variable-list">
                 {filteredVariables.map((variable, index) => (
