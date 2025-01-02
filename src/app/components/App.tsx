@@ -15,6 +15,7 @@ function App() {
   const loadingDoneRef = useRef(false);
 
   const onFindVariables = () => {
+    setVariablesInUse([]);
     setLoadingDone(false);
     setShowPreloader(true);
     parent.postMessage({ pluginMessage: { type: 'find-variables' } }, '*');
@@ -84,6 +85,9 @@ function App() {
             </div>
           ) : (
             <div>
+              <div className="variables-count">
+                <h2>Found {variablesInUse.length} variables</h2>
+              </div>
               <div className="title-wrapper">
                 <h3 className="table-header border-right">Name</h3>
                 <h3 className="table-header">Mode 1</h3>
@@ -92,7 +96,7 @@ function App() {
                 {variablesInUse.map((variable, index) => (
                   <VariableListItem key={index} variable={variable} />
                 ))}
-              </ul>
+              </ul>             
               <motion.div className="refresh" onClick={onFindVariables} whileTap={{ scale: 0.98, opacity: 0.8 }}>
                 <motion.img
                   src={refreshIcon}
