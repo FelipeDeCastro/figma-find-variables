@@ -369,7 +369,8 @@ figma.ui.onmessage = (msg) => {
       // variables back to be displayed.
       figma.ui.postMessage({
         type: "variables-imported",
-        message: variablesWithGroupedConsumers
+        message: variablesWithGroupedConsumers,
+        pageName: figma.currentPage.name,
       });
     });
   

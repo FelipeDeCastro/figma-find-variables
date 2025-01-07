@@ -15,6 +15,7 @@ function App() {
   
   // 1. Add searchTerm state
   const [searchTerm, setSearchTerm] = useState('');
+  const [pageName, setPageName] = useState('');
 
   const variablesInUseRef = useRef([]);
   const loadingDoneRef = useRef(false);
@@ -54,9 +55,10 @@ function App() {
 
   React.useEffect(() => {
     window.onmessage = (event) => {
-      const { type, message } = event.data.pluginMessage;
+      const { type, message, pageName: scannedPage } = event.data.pluginMessage;
       if (type === 'variables-imported') {
-        setVariablesInUse((prevVariablesInUse) => [...prevVariablesInUse, ...message.variables]);
+        setVariablesInUse((prev) => [...prev, ...message.variables]);
+        setPageName(scannedPage || "Unknown Page");
         setLoadingDone(true);
       }
     };
@@ -141,7 +143,10 @@ function App() {
                   ))}
                 </select>
               </div>
-              <div className="variables-count"><h3>Found {filteredVariables.length} variables</h3></div>
+              <div className="variables-count">
+                <h3>Found {filteredVariables.length} variables</h3>
+                <h4>Page: {pageName}</h4>
+              </div>
               <div className="title-wrapper">
                 <h3 className="table-header border-right">Variable</h3>
                 <h3 className="table-header">Value</h3>
