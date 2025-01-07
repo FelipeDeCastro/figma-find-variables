@@ -1,3 +1,5 @@
+/// <reference types="@figma/plugin-typings" />
+
 figma.showUI(__html__, { width: 800, height: 700 });
 
 // Variables object we'll use for storing all the variables
