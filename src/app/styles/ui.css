@@ -69,10 +69,11 @@ button {
 .filters{
   margin: 16px;
   display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 .search-input{
-  width: 256px;
+  width: 753px;
 }
 .variables-count{
   margin: 16px;
